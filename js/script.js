@@ -8,19 +8,14 @@ let height = 0;
 let animationFrame;
 
 function createParticle() {
-    const band = Math.random() < 0.5 ? "top" : "bottom";
-    const bandHeight = height * 0.12;
-
     return {
-        x: band === "bottom" ? Math.random() * width * 0.75 : Math.random() * width,
-        y: band === "top"
-            ? Math.random() * bandHeight
-            : height - Math.random() * bandHeight,
-        band,
-        radius: Math.random() * 1.7 + 0.35,
-        speed: Math.random() * 0.32 + 0.08,
-        alpha: Math.random() * 0.32 + 0.12,
-        phase: Math.random() * Math.PI * 2
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: Math.random() * 1.2 + 0.35,
+        speed: Math.random() * 0.18 + 0.04,
+        alpha: Math.random() * 0.38 + 0.22,
+        phase: Math.random() * Math.PI * 2,
+        sparkle: Math.random() < 0.2
     };
 }
 
@@ -36,7 +31,8 @@ function resizeCanvas() {
 
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    particles = Array.from({ length: 75 }, createParticle);
+    const particleCount = Math.min(260, Math.max(100, Math.round(width * height / 3200)));
+    particles = Array.from({ length: particleCount }, createParticle);
 }
 
 function animate() {
@@ -46,15 +42,9 @@ function animate() {
         particle.y -= particle.speed;
         particle.phase += 0.025;
 
-        const bandBoundary = particle.band === "top" ? height * 0.12 : height * 0.88;
-        if ((particle.band === "top" && particle.y < 0) ||
-            (particle.band === "bottom" && particle.y < bandBoundary)) {
-            particle.y = particle.band === "top"
-                ? height * 0.12
-                : height * (0.88 + Math.random() * 0.12);
-            particle.x = particle.band === "bottom"
-                ? Math.random() * width * 0.75
-                : Math.random() * width;
+        if (particle.y < 0) {
+            particle.y = height;
+            particle.x = Math.random() * width;
         }
 
         const glow = particle.alpha * (0.65 + Math.sin(particle.phase) * 0.35);
@@ -65,6 +55,21 @@ function animate() {
         ctx.shadowBlur = 7;
         ctx.shadowColor = "#e7a73e";
         ctx.fill();
+
+        if (particle.sparkle) {
+            const sparkleGlow = Math.max(0, Math.sin(particle.phase * 1.7)) * particle.alpha;
+            if (sparkleGlow > 0.08) {
+                const rayLength = particle.radius * 4.5;
+                ctx.beginPath();
+                ctx.moveTo(particle.x - rayLength, particle.y);
+                ctx.lineTo(particle.x + rayLength, particle.y);
+                ctx.moveTo(particle.x, particle.y - rayLength);
+                ctx.lineTo(particle.x, particle.y + rayLength);
+                ctx.strokeStyle = `rgba(255, 240, 196, ${sparkleGlow})`;
+                ctx.lineWidth = 0.7;
+                ctx.stroke();
+            }
+        }
     }
 
     ctx.shadowBlur = 0;
@@ -112,7 +117,7 @@ const invitationConfig = {
     celebrantName: "Shirley Sofia",
     dedication: "Quince años de sueños y alegría. Gracias por acompañarme en esta nueva etapa.",
     familyThanks: "Quince años de sueños y alegría, gracias por acompañarme con tanto amor y apoyo en esta nueva etapa.",
-    parents: { mother: "Silvia Mejía M.", father: "Olger Ccalta C." },
+    parents: { mother: "Silvia Mejía M.", father: "Olger Ccalta Cc." },
     godparents: ["Jaime Mamani Ccalta", "Sandra Mejía Mio", "Yesenia Ccoa Chullo"],
     event: {
         callout: "¡No puedo esperar\npara celebrar contigo!",
