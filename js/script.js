@@ -171,6 +171,7 @@ let autoplayActive = !reduceMotion.matches;
 let manuallyPaused = false;
 let isTurning = false;
 let bookStarted = false;
+let musicUserActivated = false;
 
 function createPageContent(pageIndex) {
     const content = document.createElement("div");
@@ -334,22 +335,37 @@ function toggleAutoplay() {
     updatePauseButton();
 }
 
-function startMusic() {
-    backgroundMusic.play().then(updateMusicButton).catch(error => {
-        const autoplayBlocked = error.name === "NotAllowedError";
-        const label = autoplayBlocked
-            ? "Reproducir música"
-            : "No se pudo reproducir la música";
-        musicButton.setAttribute("aria-label", label);
-        musicButton.setAttribute("title", autoplayBlocked
-            ? "El navegador bloqueó la reproducción automática. Toca para reproducir."
-            : label);
-        musicButton.setAttribute("aria-pressed", "false");
-        musicButton.textContent = "▶";
+function showMusicError(error) {
+    const autoplayBlocked = error.name === "NotAllowedError";
+    const label = autoplayBlocked
+        ? "Reproducir música"
+        : "No se pudo reproducir la música";
+    musicButton.setAttribute("aria-label", label);
+    musicButton.setAttribute("title", autoplayBlocked
+        ? "El navegador bloqueó la reproducción automática. Toca para reproducir."
+        : label);
+    musicButton.setAttribute("aria-pressed", "false");
+    musicButton.textContent = "▶";
 
-        if (!autoplayBlocked) {
-            console.error("No se pudo reproducir el archivo de música.", error);
+    if (!autoplayBlocked) {
+        console.error("No se pudo reproducir el archivo de música.", error);
+    }
+}
+
+function startMusic(userInitiated = false) {
+    if (userInitiated) {
+        musicUserActivated = true;
+        backgroundMusic.muted = false;
+    }
+
+    backgroundMusic.play().then(updateMusicButton).catch(error => {
+        if (error.name === "NotAllowedError" && !musicUserActivated) {
+            backgroundMusic.muted = true;
+            backgroundMusic.play().then(updateMusicButton).catch(showMusicError);
+            return;
         }
+
+        showMusicError(error);
     });
 }
 
@@ -366,7 +382,7 @@ function updateMusicButton() {
 function toggleMusic() {
     if (backgroundMusic.paused) {
         backgroundMusic.muted = false;
-        startMusic();
+        startMusic(true);
         return;
     }
 
@@ -396,7 +412,6 @@ function startBook() {
         setPageSurface(leafBack, 0);
     }
 
-    startMusic();
     scheduleNextTurn();
 }
 
@@ -408,7 +423,7 @@ backgroundMusic.addEventListener("play", updateMusicButton);
 backgroundMusic.addEventListener("pause", updateMusicButton);
 document.addEventListener("pointerdown", event => {
     if (event.target !== musicButton) {
-        startMusic();
+        startMusic(true);
     }
 }, { once: true });
 reduceMotion.addEventListener("change", event => {
