@@ -18,13 +18,17 @@
 </head>
 
 <body>
-    <div class="intro-cover" id="intro-cover" aria-hidden="true">
+    <div class="intro-cover" id="intro-cover" role="button" tabindex="0"
+        aria-label="Presiona en cualquier lugar para abrir tu invitación y reproducir la música">
         <div class="intro-cover__half intro-cover__half--left">
             <img class="intro-cover__image" src="assets/img/tapa.png" alt="">
         </div>
         <div class="intro-cover__half intro-cover__half--right">
             <img class="intro-cover__image" src="assets/img/tapa.png" alt="">
         </div>
+        <span class="intro-cover__prompt" aria-hidden="true">
+            <span>Presiona en cualquier lugar<br>para abrir tu invitación</span>
+        </span>
     </div>
 
     <main class="invitation">
@@ -147,7 +151,6 @@
 
     <template id="page4-content">
         <div class="page-copy">
-            <p class="page-eyebrow">Con cariño</p>
             <h2>Gracias por acompañarme</h2>
             <div class="gift-ornaments" aria-hidden="true">
                 <svg viewBox="0 0 48 40"><path d="M4 9h40v27H4zM4 9l20 16L44 9M4 36l14-14M44 36 30 22"/><path d="M24 9c-8 0-12-2-12-5 0-2 2-3 4-2 4 1 7 7 8 7Zm0 0c8 0 12-2 12-5 0-2-2-3-4-2-4 1-7 7-8 7Z"/></svg>

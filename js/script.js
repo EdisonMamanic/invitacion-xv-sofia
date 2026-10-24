@@ -125,7 +125,7 @@ const invitationConfig = {
     },
     whatsapp: {
         number: "+51 913 894 733",
-        message: "¡Hola! Confirmo mi asistencia a los XV años de Shirley Sofia. ¡Muchas gracias por la invitación!"
+        message: "¡Hola! Confirmo mi asistencia a los XV años de Shirley Sofia. ¡Muchas gracias por la invitación!\n\nPor favor, confirma tu nombre:"
     }
 };
 
@@ -172,6 +172,7 @@ let manuallyPaused = false;
 let isTurning = false;
 let bookStarted = false;
 let musicUserActivated = false;
+let introOpened = false;
 
 function createPageContent(pageIndex) {
     const content = document.createElement("div");
@@ -415,17 +416,44 @@ function startBook() {
     scheduleNextTurn();
 }
 
+function openIntro() {
+    if (!introCover || introOpened) {
+        return;
+    }
+
+    introOpened = true;
+    startMusic(true);
+
+    if (reduceMotion.matches) {
+        introCover.remove();
+        startBook();
+        return;
+    }
+
+    introCover.classList.add("is-opening");
+    window.setTimeout(() => {
+        introCover.remove();
+        startBook();
+    }, 1300);
+}
+
 pauseButton.addEventListener("click", toggleAutoplay);
 previousPageButton.addEventListener("click", () => beginPageTurn(-1, true));
 nextPageButton.addEventListener("click", () => beginPageTurn(1, true));
 musicButton.addEventListener("click", toggleMusic);
 backgroundMusic.addEventListener("play", updateMusicButton);
 backgroundMusic.addEventListener("pause", updateMusicButton);
-document.addEventListener("pointerdown", event => {
-    if (event.target !== musicButton) {
-        startMusic(true);
-    }
-}, { once: true });
+if (introCover) {
+    introCover.addEventListener("click", openIntro);
+    introCover.addEventListener("keydown", event => {
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openIntro();
+        }
+    });
+} else {
+    startBook();
+}
 reduceMotion.addEventListener("change", event => {
     if (event.matches) {
         autoplayActive = false;
@@ -442,26 +470,6 @@ bookLeaf.addEventListener("transitionend", event => {
         finishPageTurn();
     }
 });
-
-if (introCover) {
-    startMusic();
-    window.setTimeout(() => {
-        if (reduceMotion.matches) {
-            introCover.remove();
-            startBook();
-            return;
-        }
-
-        introCover.classList.add("is-opening");
-        window.setTimeout(() => {
-            introCover.remove();
-            startBook();
-        }, 1300);
-    }, 2000);
-} else {
-    startMusic();
-    startBook();
-}
 
 function renderCountdown(root, timestamp) {
     const state = root.querySelector("[data-countdown-state]");
