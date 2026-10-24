@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#748f9f">
+
+    <title>Mis XV años | Sofía</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Cormorant+Garamond:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/script.js" defer></script>
+</head>
+
+<body>
+    <div class="intro-cover" id="intro-cover" aria-hidden="true">
+        <div class="intro-cover__half intro-cover__half--left">
+            <img class="intro-cover__image" src="assets/img/tapa.png" alt="">
+        </div>
+        <div class="intro-cover__half intro-cover__half--right">
+            <img class="intro-cover__image" src="assets/img/tapa.png" alt="">
+        </div>
+    </div>
+
+    <main class="invitation">
+        <canvas id="particles" aria-hidden="true"></canvas>
+
+        <section class="cover">
+
+            <h1>
+                <span>Mis XV</span>
+                <span class="name">Sofía</span>
+            </h1>
+
+            <p class="subtitle">
+                Una celebración mágica
+            </p>
+            <h6>Con la bendición de Dios y con el amor de mi familia, quiero compartir contigo este momento tan
+                especial, rodeada de las personas que más quiero.</h6>
+
+        </section>
+
+        <section class="book-stage" id="book-stage" aria-label="Páginas de la invitación" hidden>
+            <div class="book-under" id="book-under"></div>
+            <div class="book-leaf" id="book-leaf" aria-hidden="true">
+                <div class="book-leaf__face book-leaf__face--front" id="leaf-front"></div>
+                <div class="book-leaf__face book-leaf__face--back" id="leaf-back"></div>
+            </div>
+            <div class="book-controls">
+                <button class="book-control" id="previous-page" type="button" aria-label="Página anterior"
+                    title="Página anterior">‹</button>
+                <button class="book-control" id="next-page" type="button" aria-label="Página siguiente"
+                    title="Página siguiente">›</button>
+                <button class="book-control" id="toggle-autoplay" type="button" aria-label="Pausar avance automático"
+                    aria-pressed="true" title="Pausar avance automático">Ⅱ</button>
+                <button class="book-control" id="toggle-music" type="button" aria-label="Silenciar música"
+                    title="Silenciar música" aria-pressed="true">♫</button>
+            </div>
+        </section>
+    </main>
+
+    <audio id="background-music" src="assets/audio/Tercer Cielo - No Crezcas Más (Letras_Lyric).mp3"
+        autoplay loop preload="auto"></audio>
+
+    <template id="page1-content">
+        <div class="page-copy">
+            <h2><span data-config="celebrantName"></span></h2>
+            <section class="family-group">
+                <h3>Con el amor de mis padres</h3>
+                <p class="family-names"><span data-family="mother"></span><span aria-hidden="true"> · </span><span data-family="father"></span></p>
+            </section>
+            <section class="family-group family-group--godparents">
+                <h3>Mis padrinos</h3>
+                <div class="godparent-names">
+                    <p><span data-godparent="0"></span></p>
+                    <p><span data-godparent="1"></span></p>
+                    <p><span data-godparent="2"></span></p>
+                    <p><span data-godparent="3"></span></p>
+                </div>
+            </section>
+            <p class="family-thanks" data-config="familyThanks"></p>
+        </div>
+    </template>
+
+    <template id="page2-content">
+        <div class="page-copy page2-copy">
+            <h2 class="event-callout" data-config="event.callout"></h2>
+            <div class="countdown" aria-label="Cuenta regresiva">
+                <p class="countdown-state" data-countdown-state>Cuenta regresiva no disponible por el momento.</p>
+                <div class="countdown-values" data-countdown-values hidden>
+                    <div><span data-countdown="days">00</span><small>Días</small></div>
+                    <div><span data-countdown="hours">00</span><small>Horas</small></div>
+                    <div><span data-countdown="minutes">00</span><small>Minutos</small></div>
+                    <div><span data-countdown="seconds">00</span><small>Segundos</small></div>
+                </div>
+            </div>
+            <div class="event-date-time">
+                <div class="page-fact">
+                    <p class="page-label">Fecha</p>
+                    <p class="event-date"><span data-event-date></span><span class="event-year"></span></p>
+                </div>
+                <div class="page-fact">
+                    <p class="page-label">Hora</p>
+                    <p class="page-value" data-event-time></p>
+                </div>
+            </div>
+            <div class="page-fact">
+                <p class="page-label">Lugar</p>
+                <p class="page-value" data-event-place></p>
+            </div>
+            <p class="event-address" data-event-address></p>
+            <a class="page-link" href="https://maps.app.goo.gl/33q2Z99FM5JWRvJH9" target="_blank"
+                rel="noopener noreferrer">Cómo llegar</a>
+        </div>
+    </template>
+
+    <template id="page3-content">
+        <div class="page-copy page3-copy">
+            <p class="page-eyebrow">Código de vestimenta</p>
+            <section class="dress-code" aria-label="Código de vestimenta">
+                <p class="dress-code__eyebrow">DRESS CODE</p>
+                <h3>GALA FORMAL</h3>
+                <div class="dress-silhouettes" aria-hidden="true">
+                    <svg viewBox="0 0 40 48"><path d="M12 5h16l7 8-4 31H9L5 13l7-8ZM12 5l8 12 8-12M5 13l15 4 15-4M20 17v27M18 18l2 4 2-4M20 22v6"/><path d="m12 5 4 6-4 3m16-9-4 6 4 3"/></svg>
+                    <svg viewBox="0 0 40 48"><path d="M14 5h12l3 10-4 8 10 21H5l10-21-4-8 3-10ZM14 5l6 4 6-4M15 15h10M15 23h10M20 9v14M11 34h18"/></svg>
+                </div>
+                <p class="dress-code__message">“Para esta noche tan especial, te invitamos a lucir tu mejor atuendo de gala.”</p>
+            </section>
+            <section class="dress-code dress-code--celebrant" aria-label="Vestido de la quinceañera">
+                <h3>VESTIDO DE LA QUINCEAÑERA</h3>
+                <div class="dress-silhouettes dress-silhouettes--gown" aria-hidden="true">
+                    <svg viewBox="0 0 40 48"><path d="M14 5h12l3 10-4 8 10 22H5l10-22-4-8 3-10ZM14 5l6 4 6-4M15 15h10M15 23h10M20 9v14M11 34h18M8 40h24"/></svg>
+                </div>
+                <div class="dress-color-list" aria-label="Colores reservados">
+                    <div class="dress-color"><span class="dress-color__swatch dress-color__swatch--steel" aria-hidden="true"></span><span>Azul acero</span></div>
+                    <div class="dress-color"><span class="dress-color__swatch dress-color__swatch--silver" aria-hidden="true"></span><span>Plateado</span></div>
+                </div>
+                <p class="dress-code__note">Estos colores están reservados exclusivamente para el vestido de la quinceañera. Agradecemos mucho tu comprensión y respeto.</p>
+            </section>
+        </div>
+    </template>
+
+    <template id="page4-content">
+        <div class="page-copy">
+            <p class="page-eyebrow">Con cariño</p>
+            <h2>Gracias por acompañarme</h2>
+            <div class="gift-ornaments" aria-hidden="true">
+                <svg viewBox="0 0 48 40"><path d="M4 9h40v27H4zM4 9l20 16L44 9M4 36l14-14M44 36 30 22"/><path d="M24 9c-8 0-12-2-12-5 0-2 2-3 4-2 4 1 7 7 8 7Zm0 0c8 0 12-2 12-5 0-2-2-3-4-2-4 1-7 7-8 7Z"/></svg>
+                <svg viewBox="0 0 48 40"><path d="M5 17h38v20H5zM3 11h42v7H3zM24 11v26"/><path d="M24 11c-8 0-13-1-13-5 0-3 3-4 5-3 4 1 7 8 8 8Zm0 0c8 0 13-1 13-5 0-3-3-4-5-3-4 1-7 8-8 8Z"/></svg>
+            </div>
+            <p class="gift-message">Tu presencia es el mejor regalo de todos.</p>
+            <p class="farewell">Con cariño, Shirley Sofia</p>
+            <p class="rsvp-note">Confirma tu asistencia para ayudarnos a preparar cada detalle de esta celebración.</p>
+            <a class="page-link page-link--rsvp"
+                data-whatsapp-link
+                href="https://wa.me/51913894733?text=%C2%A1Hola%21%20Confirmo%20mi%20asistencia%20a%20los%20XV%20a%C3%B1os%20de%20Shirley%20Sofia.%20%C2%A1Muchas%20gracias%20por%20la%20invitaci%C3%B3n%21"
+                target="_blank" rel="noopener noreferrer">Confirmar asistencia</a>
+        </div>
+    </template>
+</body>
+
+</html>
