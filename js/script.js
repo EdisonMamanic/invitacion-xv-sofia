@@ -117,7 +117,7 @@ const invitationConfig = {
     celebrantName: "Shirley Sofia",
     dedication: "Quince años de sueños y alegría. Gracias por acompañarme en esta nueva etapa.",
     familyThanks: "Quince años de sueños y alegría, gracias por acompañarme con tanto amor y apoyo en esta nueva etapa.",
-    parents: { mother: "Silvia Mejía M.", father: "Olger Ccalta Cc." },
+    parents: { mother: "Silvia Mejía M.", father: "Olger Ccalta C." },
     godparents: ["Jaime Mamani Ccalta", "Sandra Mejía Mio", "Yesenia Ccoa Chullo"],
     event: {
         callout: "¡No puedo esperar\npara celebrar contigo!",
